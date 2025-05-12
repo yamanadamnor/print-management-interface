@@ -27,7 +27,6 @@ export type Connection = {
   topics: Topic[];
 };
 
-// export const messageStoreAtom = atom(new MessageStore());
 export const clientsAtom = atom(new Map<string, mqtt.MqttClient>());
 
 // List of connection details
