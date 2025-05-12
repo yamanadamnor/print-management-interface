@@ -28,18 +28,16 @@ import { selectedConnectionAtom } from "@/lib/atoms";
 import { useMqttClientAtom } from "@/hooks/use-mqtt-client";
 
 type PrintComponentCardProps = {
-  componentName: string;
   componentState: ComponentState;
 };
 
 export function PrintComponentCard({
-  componentName,
   componentState,
 }: PrintComponentCardProps) {
   const selectedConnection = useAtomValue(selectedConnectionAtom);
   const getClient = useAtomValue(useMqttClientAtom);
   const messageStore = globalMessageStore;
-  const { start_time, total_layers, current_layer_number, status } =
+  const { component_name, time, total_layers, current_layer_number, status } =
     componentState;
   const progress = Math.floor((current_layer_number * 100) / total_layers);
 
@@ -52,10 +50,18 @@ export function PrintComponentCard({
     const newState: Partial<ComponentState> = {
       status: "cancelled",
     };
-    messageStore.updateComponentState(componentName, newState);
-    const payload = JSON.stringify(messageStore.getComponentPayload());
+    const componentTopic = `${BUILDPROCESSOR_COMPONENTS_TOPIC}/${component_name}`;
+    messageStore.updateComponentState(component_name, newState);
+    const payload = messageStore.getLatestValue(componentTopic)?.payload;
+    console.log(
+      "updated payload",
+      componentTopic,
+      messageStore.getLatestValue(componentTopic),
+    );
     console.log("cancelling", payload);
-    client.publish(BUILDPROCESSOR_COMPONENTS_TOPIC, payload);
+    if (payload) {
+      client.publish(componentTopic, payload);
+    }
   };
 
   return (
@@ -64,7 +70,7 @@ export function PrintComponentCard({
     >
       <CardHeader className="pb-2">
         <div className="flex items-start justify-between">
-          <CardTitle className="text-xl">{componentName}</CardTitle>
+          <CardTitle className="text-xl">{component_name}</CardTitle>
           <StatusBadge status={status} />
         </div>
       </CardHeader>
@@ -83,10 +89,8 @@ export function PrintComponentCard({
             <Layers className="text-muted-foreground mr-1 h-4 w-4" />
             {total_layers} layers
           </p>
-          {/* startTime is epoch time in seconds, Date objects expects epoch time in milliseconds */}
-          <p>
-            Started {formatRelative(new Date(start_time * 1000), new Date())}
-          </p>
+          {/* time is epoch time in nano seconds, Date objects expects epoch time in milliseconds */}
+          {/* <p>Started {formatRelative(new Date(time / 1000000), new Date())}</p> */}
         </div>
         <div className="space-y-2">
           <div className="flex justify-between text-sm">
@@ -116,7 +120,7 @@ export function PrintComponentCard({
               <AlertDialogHeader>
                 <AlertDialogTitle>Cancel Print Job</AlertDialogTitle>
                 <AlertDialogDescription>
-                  Are you sure you want to cancel printing "{componentName}
+                  Are you sure you want to cancel printing "{component_name}
                   "? This action cannot be undone.
                 </AlertDialogDescription>
               </AlertDialogHeader>

@@ -26,7 +26,7 @@ export function MqttOverview() {
 
           <div>
             <Button variant="destructive" onClick={handleDeleteAllMessages}>
-              <ListX className="size-4" />
+
               Clear messages
             </Button>
           </div>
