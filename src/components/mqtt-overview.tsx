@@ -9,13 +9,16 @@ import { Button } from "@/ui/button";
 import { cn } from "@/lib/utils";
 import { getTopicColorAtom, removeAllMessagesAtom } from "@/lib/connection";
 import { MqttConnectionMessageForm } from "./mqtt-connection-message-form";
+import { globalMessageStore } from "@/lib/message-store";
 
 export function MqttOverview() {
   const selectedConnection = useAtomValue(selectedConnectionAtom);
   const deleteAllMessages = useSetAtom(removeAllMessagesAtom);
+  const messageStore = globalMessageStore;
 
   const handleDeleteAllMessages = () => {
     deleteAllMessages();
+    messageStore.clearAll();
   };
 
   return (
