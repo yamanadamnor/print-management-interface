@@ -159,7 +159,7 @@ function App() {
     <SidebarProvider>
       <MqttConnectionsSidebar />
       <SidebarInset>
-        <main className="flex max-w-7xl flex-col gap-y-6 px-6 pt-10">
+        <main className="flex flex-col gap-y-6 px-6 pt-10">
           {selectedConnection && (
             <>
               <h2 className="text-xl font-bold">{selectedConnection.name}</h2>
