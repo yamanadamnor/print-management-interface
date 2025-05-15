@@ -25,16 +25,17 @@ export function MqttOverview() {
     <div className="flex flex-col gap-y-8">
       {selectedConnection ? (
         <>
-          <MqttConnectionTopicForm connection={selectedConnection} />
+          <div className="max-w-xl">
+            <MqttConnectionTopicForm connection={selectedConnection} />
+          </div>
 
           <div>
             <Button variant="destructive" onClick={handleDeleteAllMessages}>
-
               Clear messages
             </Button>
           </div>
 
-          <div>
+          <div className="max-w-1/2">
             <MqttConnectionMessageForm />
           </div>
 
