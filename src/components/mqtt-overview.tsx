@@ -1,7 +1,7 @@
 import { useAtomValue, useSetAtom } from "jotai/react";
 import { AnimatePresence, motion } from "motion/react";
 import { Message, selectedConnectionAtom } from "@/lib/atoms";
-import { ListX, UnplugIcon } from "lucide-react";
+import { UnplugIcon } from "lucide-react";
 import { Badge } from "@/ui/badge";
 import { MqttConnectionTopicForm } from "./mqtt-connection-topic-form";
 import { ScrollArea } from "@/ui/scroll-area";
