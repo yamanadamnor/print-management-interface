@@ -89,8 +89,8 @@ export function PrintComponentCard({
             <Layers className="text-muted-foreground mr-1 h-4 w-4" />
             {total_layers} layers
           </p>
-          {/* time is epoch time in nano seconds, Date objects expects epoch time in milliseconds */}
-          {/* <p>Started {formatRelative(new Date(time / 1000000), new Date())}</p> */}
+          {/* time is epoch time in nano seconds, Date objects expects epoch time in nanoseconds */}
+          <p>Started {formatRelative(new Date(time / 1000000), new Date())}</p>
         </div>
         <div className="space-y-2">
           <div className="flex justify-between text-sm">
