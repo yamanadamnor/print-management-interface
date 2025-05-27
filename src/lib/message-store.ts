@@ -17,12 +17,14 @@ export type ComponentState = {
 
 export type ComponentsPayload = Record<string, ComponentState>;
 
+type MessageDirection = "incoming" | "outgoing";
+
 export type MessageEntry = {
   timestamp: number;
   topic: string;
   // This payload string when parsed returns ComponentsPayload
   payload: string;
-  direction: "incoming" | "outgoing";
+  direction: MessageDirection;
 };
 const STORAGE_KEY = "messageStore";
 
